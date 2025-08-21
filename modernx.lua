@@ -156,6 +156,7 @@ local osc_styles = {
     Ctrl2Flip = "{\\blur0\\bord0\\1c&HFFFFFF&\\3c&HFFFFFF&\\fs24\\fnmaterial-design-iconic-font\\fry180",
     Ctrl3 = "{\\blur0\\bord0\\1c&HFFFFFF&\\3c&HFFFFFF&\\fs24\\fnmaterial-design-iconic-font}",
     Time = "{\\blur0\\bord0\\1c&HFFFFFF&\\3c&H000000&\\fs17\\fn" .. user_opts.font .. "}",
+    Frame = "{\\blur0\\bord0\\1c&HFFFFFF&\\3c&H000000&\\fs24\\fn" .. user_opts.font .. "}",
     Tooltip = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H000000&\\fs18\\fn" .. user_opts.font .. "}",
     Title = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H0\\fs38\\q2\\fn" .. user_opts.font .. "}",
     WinCtrl = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H0\\fs20\\fnmpv-osd-symbols}",
@@ -1320,6 +1321,10 @@ layouts = function()
     lo.geometry = { x = 25, y = refY - 84, an = 7, w = 64, h = 20 }
     lo.style = osc_styles.Time
 
+    lo = add_layout("tc_center")
+    lo.geometry = { x = refX, y = refY - 88, an = 7, w = 64, h = 20 }
+    lo.style = osc_styles.Frame
+
     lo = add_layout("tc_right")
     lo.geometry = { x = osc_geo.w - 25, y = refY - 84, an = 9, w = 64, h = 20 }
     lo.style = osc_styles.Time
@@ -1866,6 +1871,13 @@ function osc_init()
         state.fulltime = not state.fulltime
         request_init()
     end
+
+    -- tc_center (frame_count, fps)
+    ne = new_element("tc_center", "button")
+    ne.content = function()
+        return mp.get_property_osd("estimated-frame-number") .. "/" .. mp.get_property_osd("container-fps")
+    end
+
     -- tc_right (total/remaining time)
     ne = new_element("tc_right", "button")
     ne.content = function()
