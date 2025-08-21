@@ -464,6 +464,10 @@ function ass_draw_rr_h_ccw(ass, x0, y0, x1, y1, r1, hexagon, r2)
     end
 end
 
+local function format_fps(fps)
+    return string.format("%.3f", fps)
+end
+
 --
 -- Tracklist Management
 --
@@ -1875,7 +1879,13 @@ function osc_init()
     -- tc_center (frame_count, fps)
     ne = new_element("tc_center", "button")
     ne.content = function()
-        return mp.get_property_osd("estimated-frame-number") .. "/" .. mp.get_property_osd("container-fps")
+        local frame_number = mp.get_property_number("estimated-frame-number")
+        if not frame_number then
+            return ""
+        end
+        local fps = mp.get_property_number("estimated-vf-fps")
+        local formatted_fps = format_fps(fps)
+        return formatted_fps and (frame_number .. "/" .. formatted_fps) or frame_number
     end
 
     -- tc_right (total/remaining time)
