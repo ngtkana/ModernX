@@ -158,7 +158,7 @@ local osc_styles = {
     Time = "{\\blur0\\bord0\\1c&HFFFFFF&\\3c&H000000&\\fs17\\fn" .. user_opts.font .. "}",
     Frame = "{\\blur0\\bord0\\1c&HFFFFFF&\\3c&H000000&\\fs24\\fn" .. user_opts.font .. "}",
     Tooltip = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H000000&\\fs18\\fn" .. user_opts.font .. "}",
-    Title = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H0\\fs38\\q2\\fn" .. user_opts.font .. "}",
+    Title = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H0\\fs24\\q2\\fn" .. user_opts.font .. "}",
     WinCtrl = "{\\blur1\\bord0.5\\1c&HFFFFFF&\\3c&H0\\fs20\\fnmpv-osd-symbols}",
     elementDown = "{\\1c&H999999&}",
     elementHighlight = "{\\blur1\\bord1\\1c&HFFC033&}",
@@ -465,7 +465,7 @@ function ass_draw_rr_h_ccw(ass, x0, y0, x1, y1, r1, hexagon, r2)
 end
 
 local function format_fps(fps)
-    return string.format("%.3f", fps)
+    return fps and string.format("%.3f", fps)
 end
 
 --
@@ -1358,7 +1358,7 @@ layouts = function()
     lo.style = osc_styles.Ctrl3
     lo.visible = (osc_param.playresx >= 600)
 
-    geo = { x = 25, y = refY - 132, an = 1, w = osc_geo.w - 50, h = 48 }
+    geo = { x = 25, y = refY - 116, an = 1, w = osc_geo.w - 50, h = 34 }
     lo = add_layout("title")
     lo.geometry = geo
     lo.style =
@@ -1885,7 +1885,7 @@ function osc_init()
         end
         local fps = mp.get_property_number("estimated-vf-fps")
         local formatted_fps = format_fps(fps)
-        return formatted_fps and (frame_number .. "/" .. formatted_fps) or frame_number
+        return formatted_fps and (frame_number .. "/" .. formatted_fps) or tostring(frame_number)
     end
 
     -- tc_right (total/remaining time)
